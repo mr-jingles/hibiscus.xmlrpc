@@ -45,7 +45,7 @@ import de.willuhn.util.ApplicationException;
  * Abstrakte Basis-Implementierung des Service fuer Ueberweisungen/Lastschriften.
  * @param <T> der konkrete Auftragstyp.
  */
-public abstract class AbstractBaseUeberweisungServiceImpl<T extends BaseUeberweisung> extends AbstractServiceImpl implements BaseUeberweisungService
+public abstract class AbstractBaseUeberweisungServiceImpl<T extends AuslandsUeberweisung> extends AbstractServiceImpl implements BaseUeberweisungService
 {
   final static String PARAM_KONTO            = "konto";
   final static String PARAM_TERMIN           = "termin";
@@ -57,6 +57,9 @@ public abstract class AbstractBaseUeberweisungServiceImpl<T extends BaseUeberwei
   final static String PARAM_VERWENDUNGSZWECK = "verwendungszweck";
 
   final static String PARAM_TEXTSCHLUESSEL   = "textschluessel";
+  
+  final static String PARAM_TERMINUEBERWEISUNG   = "terminueberweisung";
+
 
   /**
    * ct.
@@ -230,6 +233,12 @@ public abstract class AbstractBaseUeberweisungServiceImpl<T extends BaseUeberwei
    */
   public String create(String kontoID, String kto, String blz, String name, String zweck, String zweck2, double betrag, String termin, String typ) throws RemoteException
   {
+ 
+	return create(kontoID, kto, blz, name, zweck, zweck2, betrag, termin, null, null);
+  }
+  
+  public String create(String kontoID, String kto, String blz, String name, String zweck, String zweck2, double betrag, String termin, String typ, String terminueberweisung) throws RemoteException
+  {
     Map<String,Object> params = new HashMap<String,Object>();
     params.put(PARAM_KONTO,kontoID);
     params.put(PARAM_KONTONUMMER,kto);
@@ -243,10 +252,12 @@ public abstract class AbstractBaseUeberweisungServiceImpl<T extends BaseUeberwei
     
     params.put(PARAM_BETRAG,betrag);
     params.put(PARAM_TERMIN,termin);
+    params.put(PARAM_TERMINUEBERWEISUNG,terminueberweisung);
     params.put(PARAM_TEXTSCHLUESSEL,typ);
     
     return create(params);
   }
+  
   
   /**
    * Erstellt den Auftrag.
@@ -290,6 +301,7 @@ public abstract class AbstractBaseUeberweisungServiceImpl<T extends BaseUeberwei
       t.setGegenkontoName((String)auftrag.get(PARAM_NAME));
       t.setTextSchluessel((String)auftrag.get(PARAM_TEXTSCHLUESSEL));
       t.setTermin(de.willuhn.jameica.hbci.xmlrpc.util.DateUtil.parse(auftrag.get(PARAM_TERMIN)));
+      t.setTerminUeberweisung(Boolean.parseBoolean((String)auftrag.get(PARAM_TERMINUEBERWEISUNG)));
       VerwendungszweckUtil.apply(t,StringUtil.parseUsage(auftrag.get(PARAM_VERWENDUNGSZWECK)));
       
       this.beforeStore(auftrag,t);

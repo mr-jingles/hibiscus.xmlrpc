@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.util.Map;
 
 import de.willuhn.jameica.hbci.HBCI;
+import de.willuhn.jameica.hbci.rmi.AuslandsUeberweisung;
 import de.willuhn.jameica.hbci.rmi.SepaLastSequenceType;
 import de.willuhn.jameica.hbci.rmi.SepaLastType;
 import de.willuhn.jameica.hbci.rmi.SepaLastschrift;
@@ -21,7 +22,7 @@ import de.willuhn.util.ApplicationException;
 /**
  * Implementierung des SEPA-Lastschrift-Service.
  */
-public class SepaLastschriftServiceImpl extends AbstractBaseUeberweisungServiceImpl<SepaLastschrift> implements SepaLastschriftService
+public class SepaLastschriftServiceImpl extends AbstractBaseUeberweisungServiceImpl<AuslandsUeberweisung> implements SepaLastschriftService
 {
  
 
